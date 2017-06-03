@@ -1,12 +1,12 @@
 @extends('app')
 
 @section('content')
-<div class="container-fluid">
+
+<div class="container fluid">
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
-				<div class="panel-heading">Crear Formulario Exclusivo</div>
-				<div class="panel-body">
+			<div class="panel panel-default fluid">
+				<div class="panel-heading "> <H4 align= center>Crear Formulario Exclusivo</H4> </div>
+				<div class="panel-body ">
 					@if (session('status'))
 						<div class="alert alert-success">
 							{{ session('status') }}
@@ -23,103 +23,88 @@
 							</ul>
 						</div>
 					@endif
-					{{ $var=4 }}
+					
 
-     <form action="submit.php" method="post" accept-charset="utf-8">
-	<div id="questions">
-	<!--This will hold the question -->
-	</div>
-
-	<p><button id="addQuestion">Add Question</button></p>
-
-	<p><input type="submit" value="Continue &rarr;"/></p>
-</form>
-
-<div id="masterQuestion">
-	<!-- This is the hidden master content used for cloning -->
-	
-
-	<div id="type1" class="questionSet">
-		<h3>Type 1</h3>
-		<p><label>Question: </label><input type="text" class="dynamic" name="question[*][question]" /></p>
-		<p><label>Answer: </label><input type="text" class="dynamic" name="question[*][answer]" /></p>
-	</div>
-
-	
-    <script type="text/javascript">
-            $(document).ready(function() {
-
-	//set up the 'Add New Question' button
-
-
-	for (i=0;i<4;i++){ 
-  			 	
-   				
-   				for (j=0;j<4;j++){ 
-   						$('#addQuestion').click(function(e){
-		//prevent the button from submitting the form
-		e.preventDefault();
-
-		
-
-		//get the new question number
-		var questionNumber = $('.question').length + 1;
-
-		//clone the master questionChanger and 'type1' question (we need to remove the ID from the questionType - we don't need it)
-		var questionChanger = $('#masterQuestion .questionChanger').clone(true);
-		var questionType = $('#type1').clone().removeAttr('id');
-
-		//create a new wrapper for the new question, set the question number (used later), add a class, and add the new content to it
-		var newQuestion = $('<div>').data('qNum', questionNumber).addClass('question').append(questionChanger, questionType);
-
-		//now loop through the '.dynamic' elements so we can change the name
-		$('.dynamic', newQuestion).each(function() {
-			//get the old dummy name
-			var oldName = $(this).attr('name');
-
-			//replace the dummy text (*) with the question number
-			$(this).attr('name', oldName.replace('*', questionNumber));
-		})
-
-		//add the new question to the #questions DIV
-		newQuestion.appendTo('#questions');
-	});
-      			
-   				}			 
-   				
-		}; 
-
-
-	//set up the 'Question Type' changer
-	$('.questionChanger select').change(function() {
-		//what type of question are we cloning (match the values of the dropdown to the IDs of the master question types)
-		var newQuestionType = $('#' + $(this).val()).clone().removeAttr('id');
-
-		//get the question number (this time from the data-qNum attribute)
-		var questionNumber = $(this).parents('.question').data('qNum');
-
-		//loop through the new question and change the name of all the '.dynamic' elements
-		$(newQuestionType).find('.dynamic').each(function(){
-			//get the old dummy name
-			var oldName = $(this).attr('name');
-
-			//replace the dummy text (*) with the question number (this time from the data-qNum attribute)
-			$(this).attr('name', oldName.replace('*', questionNumber));
-		})
-
-		//now add the new question type
-		$(this).parents('.question').find('.questionSet').html(newQuestionType);
-	});
-
-});
-    </script>
-</div>
-</div>
-
+  				<form class="form-horizontal" id="form1" method="POST" action="">
+						<input type="hidden" name="_token" value="{{ csrf_token() }}">
+						
+					
+						<div class="form-group">
+							<label class="col-sm-4 control-label">Titulo de Formulario</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" name="titulo_formulario" value="">
+								
+							</div>
+						</div>
+					
+						
 					</form>
+						<div class="form-group" >
+							<div class="col-md-6 col-md-offset-4">
+								<button type="submit" class="btn btn-primary" >
+									Guardar configuracion formulario
+								</button>
+							</div>
+						</div>
+   
+</div>
+</div>
+
+</form>
 				</div>
 			</div>
 		</div>
-	</div>
 </div>
+
+ <script type="text/javascript">
+             
+
+	//set up the 'Add New Question' button
+	function hacer_formularios()
+	    {
+	   alert("ya se cargo");
+	for (i=0;i<10;i++){ 
+  		var input = document.createElement("input");
+
+  		var div1 = document.createElement("div");
+  		var div2 = document.createElement("div");
+  		div1.setAttribute("class","form-group;"); 
+  		div2.setAttribute("class","col-sm-4"); 
+		input.setAttribute("type","text"); 
+		input.setAttribute("class","form-control"); 
+		input.setAttribute("name","pregunta"+i);
+		input.setAttribute("id","pregunta"+i);
+	
+
+			
+   			document.getElementById("form1").appendChild(input);
+   			document.getElementById("pregunta"+i).appendChild(div1);
+   			document.getElementById("pregunta"+i).appendChild(div2);
+
+   				for (j=0;j<10;j++){ 
+   					
+   					
+   					var input = document.createElement("input");
+   					var radio = document.createElement("input");
+					input.setAttribute("type","text"); 
+					//input.setAttribute("class","col-md-5 "); 
+					input.setAttribute("name","respuesta"+i+j); 
+					input.setAttribute("id","respuesta"+i+j); 
+					radio.setAttribute("type","radio"); 
+					radio.setAttribute("name","respuestas"); 
+					radio.setAttribute("id","radio"+i+j); 
+					radio.setAttribute("class","radio-inline");
+					 
+					
+   			       
+   					document.getElementById("form1").appendChild(input);
+   					document.getElementById("form1").appendChild(radio); 
+   							
+				}
+	}
+	
+	}			
+		hacer_formularios();
+    </script>
+
 @endsection
