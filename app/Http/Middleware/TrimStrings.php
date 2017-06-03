@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace formulariosdinamicos\Http\Middleware;
 
 use Illuminate\Foundation\Http\Middleware\TrimStrings as BaseTrimmer;
 

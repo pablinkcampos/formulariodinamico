@@ -1,22 +1,12 @@
-<?php namespace formulariosdinamicos\Http\Controllers;
+<?php
+
+namespace formulariosdinamicos\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-
-use formulariosdinamicos\Http\Controllers\Controller;
-use formulariosdinamicos\Formulario;
-use Session;
-use Redirect;
-use Illuminate\Routing\Route;
-
-class FormularioController extends Controller {
-
-
-
-	/**
-	 * Show the application dashboard to the user.
-	 *
-	 * @return Response
+class ExclusivoController extends Controller
+{
+    / * @return Response
 	 */
 	public function getIndex()
 	{
@@ -25,7 +15,7 @@ class FormularioController extends Controller {
 
 	public function getCrearFormex()
 	{
-		return  view('formulario.createfex');
+		return  view('formulario.createforex');
 	}
 
 	public function postCrearFormex(Request $request)
@@ -62,6 +52,5 @@ class FormularioController extends Controller {
 	{
 		return 'elimina form';
 	}
-
-
+/
 }

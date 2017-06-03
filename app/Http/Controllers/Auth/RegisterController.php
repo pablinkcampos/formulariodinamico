@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace formulariosdinamicos\Http\Controllers\Auth;
 
-use App\User;
-use App\Http\Controllers\Controller;
+use formulariosdinamicos\User;
+use formulariosdinamicos\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 

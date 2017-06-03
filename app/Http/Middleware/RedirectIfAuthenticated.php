@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace formulariosdinamicos\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
