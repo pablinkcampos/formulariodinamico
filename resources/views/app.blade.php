@@ -64,7 +64,7 @@
                                         
                                         $var= $curso->idgrupo;
 
-                                         echo "<li><a href=\"mensaje/index/$var\">$curso->nombre</a></li>";
+                                         echo "<li><a href=\"mensaje/$var\">$curso->nombre</a></li>";
                                     }
                                 
                                 
@@ -76,7 +76,7 @@
                     <!-- <li><a href="buttons.html"><i class="glyphicon glyphicon-record"></i> Buttons</a></li> -->
                                     <li><a href="editors.html"><i class="glyphicon glyphicon-pencil"></i> Inscripción</a></li>
                                     <li><a href="forms.html"><i class="glyphicon glyphicon-tasks"></i> Formularios</a></li>
-                                    <a href="{!!URL::to('/usuario/create')!!}"><i class='fa fa-plus fa-fw'></i> Agregar</a>
+                                    <a href="{!!URL::to('/mensaje/1')!!}"><i class='fa fa-plus fa-fw'></i> Agregar</a>
                                 </li>
                                 
                             </ul>
@@ -103,6 +103,8 @@
     {!!Html::script('js/metisMenu.min.js')!!}
     {!!Html::script('js/sb-admin-2.js')!!}
  	{!!Html::script('js/bootstrap-datetimepicker.js')!!}
+    {!!Html::script('js/materialize.js')!!}
+    {!!Html::script('js/materialize.min.js')!!}
     
  </body>
   <footer>

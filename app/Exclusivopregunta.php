@@ -6,7 +6,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class Exclusivopregunta extends Eloquent {
+class Exclusivopregunta extends Model{
 
 
 	/**
@@ -15,7 +15,8 @@ class Exclusivopregunta extends Eloquent {
 	 * @var string
 	 */
 	protected $table = 'form_exclusivo_pregunta';
-	protected $primaryKey = 'idform_exclusivo'
+	protected $primaryKey = 'idform_exclusivo';
+	public $timestamps = false;
 
 
 	/**
@@ -27,7 +28,7 @@ class Exclusivopregunta extends Eloquent {
 
 	 public function formulario()
     {
-        return $this->belongsTo('FormulariosD/Formulario','idformularios','pf_idformularios');
+        return $this->belongsTo('formulariosdinamicos/Formulario','idformularios','pf_idformularios');
     }
 	
 

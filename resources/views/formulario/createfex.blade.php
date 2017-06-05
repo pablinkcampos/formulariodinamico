@@ -24,7 +24,7 @@
 						</div>
 					@endif
 
-					<form class="form-horizontal" role="form" method="POST" action="">
+					<form class="form-horizontal" role="form" method="POST" action="{!!URL::to('/formulario/storeconfigex')!!}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<input type="hidden" name="tipo" value="A">
 						<div class="form-group">
@@ -61,7 +61,7 @@
     <div class="col-sm-6" style="height:130px;">
         <div class="form-group">
         	<label class="col-md-4 control-label">Fecha</label>
-            <div class='input-group date' id='datetimepicker1'>
+            <div class='input-group date' id='datetimepicker1' name="fecha_expiracion">
                 <input type='text' class="form-control" />
                 <span class="input-group-addon">
                     <span class="fa fa-calendar">
@@ -70,6 +70,11 @@
             </div>
         </div>
     </div>
+    
+
+
+
+
     <script type="text/javascript">
         $(function () {
             $('#datetimepicker1').datetimepicker({

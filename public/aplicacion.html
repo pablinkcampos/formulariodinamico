@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>UC del Maule</title>
+  <link rel="shortcut icon" href="img/ucm.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<script>
+var Mi_user = 2; 
+var Mi_curso = 0;
+var url_rest = '../sistemaADMIN';
+var SESSION = [] ;
+var LOSMENSAJES =[];
+var PRIMERA=true;
+var REFRESCAR = 10000;
+var FILTRO=0;
+var NOTIFICAR="true"
+/*var ULTIMOMENSAJE = 0;
+var ULTIMOMENSAJE2 = 0;
+var PASO= false;
+var HAYNUEVO=false;
+var NOTIUNA = false;
+*/
+
+if (typeof(Storage) !== "undefined") {
+
+    if (typeof localStorage.REFRESCAR !== 'undefined') {
+        REFRESCAR = parseInt(''+localStorage.REFRESCAR);
+    }else{
+        localStorage.REFRESCAR = 10000;
+    }
+
+    if (typeof localStorage.NOTIFICAR !== 'undefined') {
+        NOTIFICAR = String(localStorage.NOTIFICAR);
+    }else{
+        localStorage.NOTIFICAR = "true";
+    }
+
+    if (typeof localStorage.sessionUCMapp !== 'undefined') {
+      SESSION = JSON.parse(localStorage.sessionUCMapp);
+      Mi_user = parseInt(SESSION.id_user);
+      //console.log(SESSION); 
+    }else{
+      window.location.href = "index.html";
+    }
+} else {
+    window.location.href = "index.html";
+}
+
+
+</script>
+
+    <script type="text/javascript" src="jquery/jquery-1.12.0.min.js"></script>
+    <script src="js/materialize.min.js"></script>
+
+    <!--<script src="js/React0.13.3.js"></script>
+    <script src="js/JSXTransformer0.13.3.js"></script>-->
+
+  
+    <script type="text/javascript" src="funciones.js"></script>
+
+    <link rel="stylesheet" href="css/materialize.min.css" media="screen,projection">
+    <link rel="stylesheet" href="font/material-design-icons/material-icons.css">
+    <link rel="stylesheet" href="css/miplantilla.css" media="screen,projection" >
+
+    <!--<script src="react_todo3.jsx" type="text/jsx;harmony=true"></script>-->
+    
+<script>
+
+function alertapp(mensaje,tiempo) {
+    //console.log("entra");
+    $('#lanotifica').html('');
+    var id  = Math.floor((Math.random() * 1000) + 1);
+
+    var noti = '<span id="'+id+'"class="lanotify">'+mensaje+'</span>';
+
+    $('#lanotifica').html(noti);
+    if(tiempo>0){
+      setTimeout(function(){ $('#lanotifica').html('');}, tiempo);
+    }
+}
+
+function alertapp2(mensaje,tiempo) {
+    //console.log("entra");
+    $('#lanotifica2').html('');
+    var id  = Math.floor((Math.random() * 1000) + 1);
+
+    var noti = '<span id="'+id+'"class="lanotify2">'+mensaje+'</span>';
+
+    $('#lanotifica2').html(noti);
+    if(tiempo>0){
+      setTimeout(function(){ $('#lanotifica').html('');}, tiempo);
+    }
+}
+
+
+function replaceURLWithHTMLLinks(text)
+    {
+      var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+      return text.replace(exp,"<a href='$1' target='_blank'>$1</a>"); 
+      //return text.replace(exp,"<a href='$1' target='_blank'>$1</a>"); 
+    }
+
+function nl2br (str, is_xhtml) {   
+    var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    
+    var textonuevo = (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
+    return replaceURLWithHTMLLinks(textonuevo);
+}
+
+
+</script>
+
+</head>
+<body class="mdlfondo">
+
+<div id="lanotifica"></div>
+<div id="lanotifica2"></div>
+
+<div id="miinfo" class="modal modal-fixed-footer mdlmen mdlfondo modalinfomio">
+    <div class="modal-content" align="center">
+      <div class="logito"></div>
+      <div>
+      <span style="text-transform:uppercase;">
+      <br>
+      <br>ingeniería civil en informática
+      <br>Jean Edwien E. Gutiérrez Ponce
+      <br>diciembre - 2016</span>
+      <br>versión : 1.0
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cerrar</a>
+    </div>
+  </div>
+
+<div id="mdlhola" class="modal modal-fixed-footer mdlmen mdlfondo">
+    <div class="modal-content" align="center">
+      <div class="logito"></div>
+      <div>
+      <span style="text-transform:uppercase;">
+      <br>
+      <br><h2>Bienvenido</h2> 
+      <span id="miyo"></span>
+      <br>gracias por instalar nuestra aplicación</span>
+      </div>
+      
+      
+      <div class="row">
+      <div class="col s12 m6 offset-m3 l6 offset-l3"><hr></div>
+      <div class="input-field col s6 offset-m3 m3 offset-l3 l3"><strong>Actualizar cada : </strong></div>
+      <div class="input-field col s6 m3 l3">
+        <select id="mitiempo"class="browser-default">
+          <option value="10000">Constante</option>
+          <option value="30000">30 seg.</option>
+          <option value="60000">1 min.</option>
+          <option value="300000">5 min.</option>
+          <option value="600000">10 min.</option>
+          <option value="900000">15 min.</option>
+          <option value="1200000">30 min.</option>
+        </select>
+      </div>
+      </div>
+
+      <div class="row">
+      <div class="col s6 offset-m3 m3 offset-l3 l3"><strong>Notificaciones : </strong></div>
+      <div class="switch col s6 m3 l3">
+        <label>
+        Off
+        <input id="notifiac" type="checkbox">
+        <span class="lever"></span>
+        On
+        </label>      
+      </div>
+      </div>
+      <br>
+      <div class="clearfix"></div>
+
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cerrar</a>
+    </div>
+  </div>
+
+<div id="modalcerrar" class="modal modal-fixed-footer mdlmen mdlfondo modalinfomio">
+    <div class="modal-content" align="center" style="display: table;">
+      <span class="divmedio"><h5>¿ DESEA CERRAR SESIÓN ?</h5></span>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" onclick="cerrarsession();" class=" modal-action modal-close waves-effect waves-green btn-flat left">Aceptar</a>
+      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat ">Cancelar</a>
+      <a href="aplicacion.html" class=" modal-action modal-close waves-effect waves-green btn-flat" style="position:absolute;left:calc(50% - 35px);"><i class="sm material-icons">refresh</i></a>
+    </div>
+  </div>
+
+
+<div id="load" class="loadding" align="center">
+  <div class="loaddingCenter">
+      <span class="logo-lateral"></span>
+      <div class="progress indigo darken-4" style="width:220px;">
+        <div class="indeterminate  indigo accent-1"></div>
+      </div>
+      <div style="color:#002a61;font-size:15px;font-weight: bold;">Cargando</div>
+      <div style="color:#FFFFFF;font-size:15px;font-weight: bold;">
+        <br>
+        <a onclick="cerrarsession();" class="waves-effect waves-light btn indigo accent-3">SALIR</a>
+      </div>
+  </div>
+</div>
+
+<header>
+<div class="navbar-fixed">
+  
+   <nav class="barraariba fixed textobarrarriba">
+ <ul id="slide-out" class="side-nav">
+ <div align="center" ondblclick="miinfo()" class="footlateral"><span class="logo-lateral"> 
+ </span>
+ </div>
+     <div id="hola1"></div>
+    <div id="cursos1"></div>
+    <div id="chao1"></div>
+    </ul>
+    <ul class="hide-on-med-and-down">
+      <div style="padding-left:20px;">SISTEMA DE NOTIFICACIONES</div>
+    </ul>
+    <a href="#" data-activates="slide-out" class="button-collapse textobarrarriba">SISTEMA DE NOTIFICACIONES<i class="material-icons left" style="color:#f9a825 ">menu</i></a>
+</nav>
+
+</div>
+
+<ul class="side-nav fixed hide-on-med-and-down barra" >
+  <div align="center" ondblclick="miinfo()" class="footlateral"><span class="logo-lateral">
+  </span></div>
+  <div id="hola2"></div>
+  <div id="cursos2"></div>
+  <div id="chao2"></div>
+</ul>
+</header>
+
+<main>
+<div id="mensajes1"></div>
+</main>
+
+
+<div class="fixed-action-btn vertical click-to-toggle" style="bottom: 45px; right: 24px;z-index:auto;">
+    <a class="btn-floating btn-large   yellow darken-3 logoucm">
+    </a>
+    <ul style="z-index:999 !important;">
+      <li id="eladdmen"><a class="btn-floating  modal-trigger " style="background:#37a8e0;" data-target="modal2" data-position="left" data-tooltip="nuevo mensaje"><i class="material-icons" style="color:#f9a825 ;">mail</i></a></li>
+      <li><a id="eladdcurso" class="btn-floating  modal-trigger " style="background:#37a8e0;" data-target="modal3" data-position="left" data-tooltip="inscribir curso"><i class="material-icons" style="color:#f9a825 ;">add_circle</i></a></li>
+      <li><a id="mdl_rcurso" class="btn-floating  modal-trigger " style="background:#37a8e0;" data-target="modal4" data-position="left" data-tooltip="remover curso"><i class="material-icons" style="color:#f9a825 ;">remove_circle</i></a></li>
+      <!--
+      <li><a data-activates="slide-out" class="button-collapse btn-floating blue darken-3 hide-on-large-only" data-position="left" data-tooltip="menu"><i class="material-icons" style="color:#f9a825;">menu</i></a></li>
+      -->
+    </ul>
+  </div>
+
+ <div id="modal1" class="modal modal-fixed-footer mimodal mdlmen " style="">
+    <div class="modal-content">
+      <h4 id="mentitulo">titulo</h4>
+      <p id="mencurso" style="font-weight: bold;">curso</p>
+      <p id="mencuerpo">mensaje</p>
+    </div>
+    <div class="modal-footer">
+      <span id="menfecha" style="padding-left:17px;float:left;margin:13px 0px;color:#FFFFFF;">fecha</span>
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">cerrar</a>
+    </div>
+  </div>
+
+   <div id="modal2" class="modal modal-fixed-footer mimodal mdlmen">
+    <div class="modal-content elmodal">
+
+     <div class="input-field col s12">
+        <div class="row">
+        <div align="center"><h5>Nuevo Mensaje</h5></div>
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <input placeholder="asunto" id="men_titulo" type="text" class="validate">
+          <label for="men_titulo">ASUNTO:</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <select id="men_cursos_man" multiple>
+          </select>
+          <label>DIRIGIDO A:</label>
+        </div>
+      </div>
+     <div class="row" style="margin-bottom:0px !important;">
+        <div class="input-field col s12">
+          <textarea placeholder="su comunicado" id="men_mensaje" class="materialize-textarea"></textarea>
+          <label for="men_mensaje">MENSAJE :</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-field col s12 m12 " style="margin-top:0px !important;"><label style="font-size: 0.8rem;">PRIORIDAD :</label><br></div>
+        <div class="input-field col s6 m3 l2 ">
+          <input name="men_prio" class="ChekMU" type="radio" id="men_prio1" value="1" /><label for="men_prio1">Alta</label>
+        </div>
+        <div class="input-field col s6 m3 l2">
+          <input name="men_prio" class="ChekUR" type="radio" id="men_prio2" value="2" /><label for="men_prio2">Media</label>
+        </div>
+        <div class="input-field col s6 m3 l2">
+          <input name="men_prio" class="ChekNO" type="radio" id="men_prio3" value="3" /><label for="men_prio3">Baja</label>
+        </div>
+        <!--<div class="input-field col s6 m3 l2">
+          <input name="men_prio" class="ChekBA" type="radio" id="men_prio4" value="4" /><label for="men_prio4">Baja</label>
+        </div> -->
+        <div class="input-field col s12 hide-on-large-only"><hr></div>
+        <div class="input-field col offset-s6 s6 offset-m9 m3 offset-l2 l2">
+          <input type="checkbox" id="men_check" class="filled-in checkbox-micolor">
+          <label for="men_check">CONFIRMAR</label>
+        </div>
+      </div>
+       <br>
+    </form>
+  </div>
+      </div>
+
+
+    </div>
+    <div class="modal-footer">
+     <button id="enviarmens" class="btn yellow darken-1 waves-effect waves-light left " style="color:#32a7dd;" type="submit" name="action" >Enviar
+    <i class="material-icons right">send</i>
+  </button>
+     <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">cerrar</a>
+    </div>
+  </div>
+
+
+<div id="modal3" class="modal modal-fixed-footer mimodal mdlmen mdlfondo">
+    <div class="modal-content elmodal" >
+
+     <div class="input-field col s12">
+        <div class="row">
+        <div align="center"><h5>Inscribir Curso</h5></div>
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <input placeholder="inserte codigo" id="mdl3_cursoid" type="text" class="validate">
+          <label for="men_titulo">BUSCAR :</label>
+          <a id="mdl3_buscar" class="waves-effect waves-light btn blue darken-3" style="width:100%;"><span class="btntextmover"><i class="material-icons left">search</i> Buscar</span></a>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom:0px !important;">
+        <div class="input-field col s12">
+          
+          <table class="bordered">
+            <tbody id="buscalistadocurso">
+              
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+    </form>
+  </div>
+      </div>
+
+
+    </div>
+    <div class="modal-footer">
+     <a id="cerrarm3" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">cerrar</a>
+    </div>
+  </div>
+
+
+<div id="modal4" class="modal modal-fixed-footer mimodal mdlmen mdlfondo">
+    <div class="modal-content elmodal">
+
+     <div class="input-field col s12">
+        <div class="row">
+        <div align="center"><h5>Eliminar Curso</h5></div>
+    <form class="col s12">
+      <div class="row" style="margin-bottom:0px !important;">
+        <div id="liscursoins"class="input-field col s12">
+          
+        </div>
+      </div>
+
+    </form>
+  </div>
+      </div>
+
+
+    </div>
+    <div class="modal-footer">
+     <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">cerrar</a>
+    </div>
+  </div>
+
+
+<div id="modal5" class="modal modal-fixed-footer mimodal mdlmen mdlfondo">
+    <input type="text" id="passcurso" hidden="hidden" >
+    <div class="modal-content elmodal">
+
+     <div class="input-field col s12">
+        <div class="row">
+        <div align="center"><h5>Eliminar Curso</h5></div>
+    <form class="col s12">
+      <div class="row" style="margin-bottom:0px !important;">
+        <div class="input-field col s12 center">      
+          <div style="font-weight: bold;">Codigo</div>
+          <div id="mdl5_cursocodigo"></div>
+          <div style="font-weight: bold;"><br>Curso</div>
+          <div id="mdl5_cursonombre"></div> 
+          <div ><br><a id="mdl5_cursodelete" data-listadoid="" class="waves-effect waves-light btn red accent-4 bottom" style="margin-bottom:2px;color:white;"><span><i class="material-icons left" style="color:#white;">delete_forever</i>Confirmar Eliminación</span></a></div> 
+        </div>
+      </div>
+      
+    </form>
+  </div>
+      </div>
+
+
+    </div>
+    <div class="modal-footer">
+     <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">cerrar</a>
+    </div>
+  </div>
+
+<div id="modal6" class="modal modal-fixed-footer mimodal mdlmen mdlfondo">
+    <div class="modal-content elmodal">
+
+     <div class="input-field col s12">
+        <div class="row">
+        <div align="center"><h5>Inscribir Curso</h5></div>
+    <form class="col s12">
+      <div class="row" style="margin-bottom:0px !important;">
+        <div class="input-field col s12 center">    
+          <div style="font-weight: bold;">Codigo</div>
+          <div id="m6_cursocodigo"></div>
+          <div style="font-weight: bold;"><br>Curso</div>
+          <div id="m6_cursonombre"></div> 
+          <div class="textcaja"><br>password</div>
+          <input id="lapasscurso" type="password" placeholder="password" class="caja">
+          <div id="meninscurso"></div>
+          <div><a  id="m6_inscurso" data-cursoid="" class="waves-effect waves-light btn light-green darken-4 bottom" style="margin-bottom:2px;color:white;"><span><i class="material-icons left" style="color:#white;">done</i>Confirmar Inscripcion</span></a></div> 
+        </div>
+      </div>
+      
+    </form>
+  </div>
+      </div>
+
+
+    </div>
+    <div class="modal-footer">
+     <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">cerrar</a>
+    </div>
+  </div>
+
+<script>
+// Initialize collapse button
+//$(".button-collapse").sideNav();
+// Initialize collapsible (uncomment the line below if you use the dropdown variation)
+
+// Show sideNav
+//$('.button-collapse').sideNav('show');
+// Hide sideNav
+//$('.button-collapse').sideNav('hide');
+
+$('.button-collapse').sideNav({
+  menuWidth: 300, // Default is 240
+  edge: 'left', // Choose the horizontal origin
+  closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
+});
+
+
+$('#cursos1').bind('DOMNodeInserted DOMNodeRemoved', function() {
+  $('.collapsible').collapsible();
+  //NOTIFICACIONES();
+});
+$('#cursos2').bind('DOMNodeInserted DOMNodeRemoved', function() {
+  $('.collapsible').collapsible();
+});
+
+function NOTIFICACIONES() {
+  console.log("hay nuevo mensaje :");
+  console.log(HAYNUEVO);
+}
+
+$(document).ready(function(){
+  cargacursosins();
+  cargacursosmen();
+  function_uploadpag();
+
+  $( "#mitiempo" ).val(REFRESCAR);
+  checknotificar();
+});
+
+function function_uploadpag() {
+  $('select').material_select();
+  $('.tooltipped').tooltip({delay: 50});
+  $('.modal-trigger').leanModal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      in_duration: 300, // Transition in duration
+      out_duration: 200, // Transition out duration
+      starting_top: '4%', // Starting top style attribute
+      ending_top: '10%' // Ending top style attribute
+    }
+    );
+}
+
+function checknotificar() {
+  if(NOTIFICAR === "true"){
+    $("#notifiac").prop("checked", "checked");
+  }else{
+    $("#notifiac").prop("checked", "");
+  }
+}
+
+$('#notifiac').change(function() {
+    if($(this).is(":checked")) {
+        localStorage.NOTIFICAR = String("true");
+        NOTIFICAR = localStorage.NOTIFICAR;
+    }else{
+        localStorage.NOTIFICAR = String("false");
+        NOTIFICAR = localStorage.NOTIFICAR;
+    }      
+});
+
+$( "#mitiempo" ).change(function () {
+  var eltiempo = $( "#mitiempo" ).val();
+  localStorage.REFRESCAR = eltiempo;
+  REFRESCAR = parseInt(''+localStorage.REFRESCAR);
+});
+
+$("#miyo").html(SESSION.nombre);
+elcargamensajes();
+</script>
+
+<script>
+  function notificacion() {
+    // body...
+  }
+
+
+$("#hola1").html('<li class="bold"><a  data-activates="slide-out" class="collapsible-header"><div onClick="abriruser();"> Bienvenido <span class="textcapital">'+SESSION.nombre2+'</span><i class="material-icons">person_pin</i></div></a></li>');
+$("#hola2").html('<li class="bold"><a  data-activates="slide-out" class="collapsible-header"><div onClick="abriruser();"> Bienvenido <span class="textcapital">'+SESSION.nombre2+'</span><i class="material-icons">person_pin</i></div></a></li>');
+$("#chao1").html('<li class="divider"></li><li class="bold"><a  data-activates="slide-out" class="collapsible-header"><div onClick="cerrarsesion();"> Cerrar Sesión<i class="material-icons">exit_to_app</i></div></a></li>');
+$("#chao2").html('<li class="divider"></li><li class="bold"><a  data-activates="slide-out" class="collapsible-header"><div onClick="cerrarsesion();"> Cerrar Sesión<i class="material-icons">exit_to_app</i></div></a></li>');
+
+</script>
+
+
+</body>
+</html>
+

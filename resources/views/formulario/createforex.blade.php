@@ -1,5 +1,7 @@
 @extends('app')
 
+
+
 @section('content')
 
 <div class="container fluid">
@@ -24,28 +26,28 @@
 						</div>
 					@endif
 					
-
-  				<form class="form-horizontal" id="form1" method="POST" action="">
+				
+  				<form class="form-horizontal" id="form1" method="POST" action="{!!URL::to('/formulario/storepregunta')!!}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						
 					
-						<div class="form-group">
-							<label class="col-sm-4 control-label">Titulo de Formulario</label>
-							<div class="col-sm-4">
-								<input type="text" class="form-control" name="titulo_formulario" value="">
-								
-							</div>
-						</div>
-					
-						
-					</form>
-						<div class="form-group" >
+						<h1 align=center ><?php use formulariosdinamicos\Formulario; 
+							$titulo = Formulario::all()->last();
+							echo $titulo->titulo_formulario; ?></h1>
+
+
+					<div class="form-group" >
 							<div class="col-md-6 col-md-offset-4">
 								<button type="submit" class="btn btn-primary" >
 									Guardar configuracion formulario
 								</button>
 							</div>
-						</div>
+						</div>		
+							
+					
+						
+					</form>
+						
    
 </div>
 </div>
@@ -63,42 +65,49 @@
 	function hacer_formularios()
 	    {
 	   alert("ya se cargo");
-	for (i=0;i<10;i++){ 
-  		var input = document.createElement("input");
 
-  		var div1 = document.createElement("div");
-  		var div2 = document.createElement("div");
-  		div1.setAttribute("class","form-group;"); 
-  		div2.setAttribute("class","col-sm-4"); 
+	  var preguntas = <?php echo $cantidad_preguntas; ?>;
+	  var alternativas = <?php echo $cantidad_alternativas; ?>;
+
+
+	  var p = parseInt(preguntas);
+	  var a = parseInt(alternativas);
+	for (i=1;i<=p;i++){ 
+  		var input = document.createElement("input");
+  		input.setAttribute("placeholder","Pregunta"+" "+i); 
+
+  		input.setAttribute("class","form-control"); 
+  		input.setAttribute("style","margin: 10px"); 
 		input.setAttribute("type","text"); 
-		input.setAttribute("class","form-control"); 
 		input.setAttribute("name","pregunta"+i);
 		input.setAttribute("id","pregunta"+i);
 	
 
-			
    			document.getElementById("form1").appendChild(input);
-   			document.getElementById("pregunta"+i).appendChild(div1);
-   			document.getElementById("pregunta"+i).appendChild(div2);
+   		
 
-   				for (j=0;j<10;j++){ 
+   				for (j=1;j<=a;j++){ 
    					
    					
    					var input = document.createElement("input");
    					var radio = document.createElement("input");
 					input.setAttribute("type","text"); 
-					//input.setAttribute("class","col-md-5 "); 
+					input.setAttribute("placeholder","alternativa"+" "+j); 
+					input.setAttribute("class","col-md-offset-1 "); 
+					input.setAttribute("style","margin: 10px"); 
 					input.setAttribute("name","respuesta"+i+j); 
 					input.setAttribute("id","respuesta"+i+j); 
 					radio.setAttribute("type","radio"); 
-					radio.setAttribute("name","respuestas"); 
+					radio.setAttribute("name","radio"+i); 
 					radio.setAttribute("id","radio"+i+j); 
+					radio.setAttribute("value",j);
 					radio.setAttribute("class","radio-inline");
 					 
 					
    			       
    					document.getElementById("form1").appendChild(input);
-   					document.getElementById("form1").appendChild(radio); 
+   					document.getElementById("form1").appendChild(radio);
+   				
    							
 				}
 	}

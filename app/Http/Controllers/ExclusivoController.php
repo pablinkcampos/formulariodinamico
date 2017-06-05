@@ -1,13 +1,13 @@
 <?php
 
 namespace formulariosdinamicos\Http\Controllers;
-
+use formulariosdinamicos\Formulario;
+use formulariosdinamicos\Exclusivopregunta;
 use Illuminate\Http\Request;
 
 class ExclusivoController extends Controller
 {
-    / * @return Response
-	 */
+    
 	public function getIndex()
 	{
 		return view('home');
@@ -18,19 +18,21 @@ class ExclusivoController extends Controller
 		return  view('formulario.createforex');
 	}
 
-	public function postCrearFormex(Request $request)
+	public function postCrearPregunta(Request $request)
 	{
-
-		$formulario = new Formulario;
-    	$formulario->titulo_formulario = $request->titulo_formulario;
-     	$formulario->tipo = $request->tipo;
-      	$formulario->cantidad_preguntas = $request->cantidad_preguntas;
-      	$formulario->cantidad_alternativas = $request->cantidad_alternativas;
-        $formulario->visible = $request->visible;
-    	$formulario->fecha_expiracion = $request->fecha_expiracion;
-    	
-    	$formulario->save();
+		$formulario = Formulario::all()->last();
+							$p=$formulario->cantidad_preguntas;
+							$id=$formulario->idformularios;
+		for ($i=1;$i<=$p;$i++){ 
+			
+			$pregunta = new Exclusivopregunta;
+    		$pregunta->titulo_pregunta = $_REQUEST['pregunta'.$i];;
+     		$pregunta->pf_idformularios = $id;
+      		$pregunta->respuesta_correcta = $_REQUEST['radio'.$i];;
+      		$pregunta->save();
+		};	
 		
+
        
        echo 'se guardo';
 	}
@@ -52,5 +54,5 @@ class ExclusivoController extends Controller
 	{
 		return 'elimina form';
 	}
-/
+
 }

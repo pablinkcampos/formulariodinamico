@@ -20,7 +20,7 @@ class FormularioController extends Controller {
 	 */
 	public function getIndex()
 	{
-		return view('home');
+		return view('app');
 	}
 
 	public function getCrearFormex()
@@ -42,7 +42,8 @@ class FormularioController extends Controller {
     	$formulario->save();
 		
        
-       echo 'se guardo';
+       return view("formulario.createforex")->with('cantidad_preguntas',$request->cantidad_preguntas)->with('cantidad_alternativas',$request->cantidad_alternativas);
+
 	}
 
 	public function getActualizarForm()

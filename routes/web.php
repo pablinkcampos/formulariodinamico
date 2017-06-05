@@ -12,5 +12,20 @@
 */
 
 Route::get('/', function () {
-    return view('formulario.createforex');
+    return view('app');
+});
+
+
+
+Route::get('/mensaje/{id}','MensajeController@getIndex');
+
+
+Route::get('/formulario/app','FormularioController@getIndex');
+
+Route::get('/formulario/createconfigex','FormularioController@getCrearFormex');
+Route::post('/formulario/storeconfigex','FormularioController@postCrearFormex');
+Route::post('/formulario/storepregunta','ExclusivoController@postCrearPregunta');
+
+Route::get('/formulario',function() {
+	return view('dashboard');
 });

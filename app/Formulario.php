@@ -27,7 +27,7 @@ class Formulario extends Model {
 
 	  public function exclusivopregunta(){
         // creamos una relaciÃ³n con el modelo de Producto
-        return $this->hasOne('FormulariosD/Exclusivopregunta', 'idformularios','pf_idformularios');
+        return $this->hasOne('formulariosdinamicos/Exclusivopregunta', 'idformularios','pf_idformularios');
     }
 
 }
