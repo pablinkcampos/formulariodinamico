@@ -32,7 +32,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Proyecto Formularios</a>
+                <a class="navbar-brand" href="{!!URL::to('/')!!}">Proyecto Formularios</a>
             </div>
            
 
@@ -57,25 +57,21 @@
                         <li>
                             <a href="#"><i class="glyphicon glyphicon-education"></i> Cursos<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <?php $cursos = DB::table('grupo')->get();
+                                    <?php  $cursos = DB::table('grupo')->get(); ?>
+                                    @foreach ($cursos as $curso)   
+                                    <?php $var= $curso->idgrupo; ?> 
+                                        <li><a href="{!!URL::to('/mensaje').'/'.$var!!}"> {{$curso->nombre}}</a></li>
+                                    @endforeach
 
-                                    foreach ($cursos as $curso)
-                                    {
-                                        
-                                        $var= $curso->idgrupo;
-
-                                         echo "<li><a href=\"mensaje/$var\">$curso->nombre</a></li>";
-                                    }
                                 
                                 
                                
-                                ?>
+                                
                                  <li>
                                     <li><a href="stats.html"><i class="glyphicon glyphicon-stats"></i> Estadisticas</a></li>
-                    <!-- <li><a href="tables.html"><i class="glyphicon glyphicon-list"></i> Tables</a></li> -->
-                    <!-- <li><a href="buttons.html"><i class="glyphicon glyphicon-record"></i> Buttons</a></li> -->
+
                                     <li><a href="editors.html"><i class="glyphicon glyphicon-pencil"></i> Inscripción</a></li>
-                                    <li><a href="forms.html"><i class="glyphicon glyphicon-tasks"></i> Formularios</a></li>
+                                    <li><a href="{!!URL::to('/formulario/mostrarforex')!!}"><i class="glyphicon glyphicon-tasks"></i> Formularios</a></li>
                                     <a href="{!!URL::to('/mensaje/1')!!}"><i class='fa fa-plus fa-fw'></i> Agregar</a>
                                 </li>
                                 

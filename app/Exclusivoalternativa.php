@@ -6,7 +6,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class Exclusivopregunta extends Model{
+class Exclusivoalternativa extends Model{
 
 
 	/**
@@ -14,8 +14,8 @@ class Exclusivopregunta extends Model{
 	 *
 	 * @var string
 	 */
-	protected $table = 'form_exclusivo_pregunta';
-	protected $primaryKey = 'idform_exclusivo';
+	protected $table = 'alternativa_exclusiva';
+	protected $primaryKey = 'idalternativa';
 	public $timestamps = false;
 
 
@@ -24,16 +24,12 @@ class Exclusivopregunta extends Model{
 	 *
 	 * @var array
 	 */
-	protected $fillable = [ 'titulo_pregunta', 'pf_idformularios','respuesta_correcta'];
+	protected $fillable = [ 'nombre_alternativa', 'fk_idform_exclusivo'];
 
 	 public function formulario()
     {
-        return $this->belongsTo('formulariosdinamicos/Formulario','idformularios','pf_idformularios');
+        return $this->belongsTo('formulariosdinamicos/Exclusivopregunta','idform_exclusivo','fk_idform_exclusivo');
     }
 	
-	 public function alternativa()
-    {
-        return $this->hasOne('formulariosdinamicos/Exclusivoalternativa', 'idform_exclusivo','fk_idform_exclusivo');
-    }
 
 }

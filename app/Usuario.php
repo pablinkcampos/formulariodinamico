@@ -5,7 +5,7 @@ namespace formulariosdinamicos;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Model
 {
     use Notifiable;
 
@@ -14,8 +14,12 @@ class User extends Authenticatable
      *
      * @var array
      */
+    protected $table = 'usuario';
+    protected $primaryKey = 'idusuario';
+    public $timestamps = false;
+
     protected $fillable = [
-        'name', 'email', 'password',
+        'rut', 'nombre','pass', 'email', 'bandera', 'password','fk_idtipousuario'
     ];
 
     /**
@@ -23,7 +27,5 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    
 }

@@ -14,8 +14,8 @@ class Mensaje extends Model {
 	 *
 	 * @var string
 	 */
-	protected $table = 'formularios';
-	protected $primaryKey = 'idformularios';
+	protected $table = 'mensaje';
+	protected $primaryKey = 'idmensaje';
 	public $timestamps = false;
 
 	/**
@@ -23,11 +23,8 @@ class Mensaje extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = [ 'titulo_formulario', 'tipo','cantidad_preguntas','visible','fecha_expiracion','cantidad_alternativas'];
+	protected $fillable = [ 'mensaje_titulo', 'mensaje_src','fk_idgrupo','fk_idprioridad','fk_idusuario','fk_formularios'];
 
-	  public function exclusivopregunta(){
-        // creamos una relaciÃ³n con el modelo de Producto
-        return $this->hasOne('FormulariosD/Exclusivopregunta', 'idformularios','pf_idformularios');
-    }
+	 
 
 }

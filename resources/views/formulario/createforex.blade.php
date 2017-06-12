@@ -36,27 +36,17 @@
 							echo $titulo->titulo_formulario; ?></h1>
 
 
-					<div class="form-group" >
-							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" class="btn btn-primary" >
-									Guardar configuracion formulario
-								</button>
-							</div>
-						</div>		
+					
 							
 					
 						
 					</form>
-						
-   
-</div>
-</div>
-
-</form>
-				</div>
 			</div>
 		</div>
+	</div>
 </div>
+		
+
 
  <script type="text/javascript">
              
@@ -111,6 +101,18 @@
    							
 				}
 	}
+		var button = document.createElement("input");
+		var div=document.createElement("div");
+		div.setAttribute("class","form-group");
+		button.setAttribute("type","submit"); 
+		button.setAttribute("value","guardar");
+	    button.setAttribute("class","btn btn-primary btn-lg");
+	    document.getElementById("form1").appendChild(div);
+	    document.getElementById("form1").appendChild(button);
+					 
+
+
+		
 	
 	}			
 		hacer_formularios();

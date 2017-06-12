@@ -27,6 +27,24 @@
 					<form class="form-horizontal" role="form" method="POST" action="{!!URL::to('/formulario/storeconfigex')!!}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<input type="hidden" name="tipo" value="A">
+						<input type="hidden" name="id_curso" value="{{ $id_curso }}">
+						
+						<div class="form-group">
+							<label class="col-md-4 control-label">Titulo del mensaje</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="mensaje_titulo" value="">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label">descripcion</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="mensaje_src" value="">
+							</div>
+						</div>
+
+
+
 						<div class="form-group">
 							<label class="col-md-4 control-label">Titulo de Formulario</label>
 							<div class="col-md-6">
@@ -56,20 +74,20 @@
   							<input type="radio" name="visible" id="privado" value="0"> Privado
 							</label>
 						</div>
-<div class="form-group">
-<div class="container">
-    <div class="col-sm-6" style="height:130px;">
-        <div class="form-group">
-        	<label class="col-md-4 control-label">Fecha</label>
-            <div class='input-group date' id='datetimepicker1' name="fecha_expiracion">
-                <input type='text' class="form-control" />
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar">
-                    </span>
-                </span>
-            </div>
-        </div>
-    </div>
+						<div class="form-group">
+							<div class="container">
+    							<div class="col-sm-6" style="height:130px;">
+      							  <div class="form-group">
+        							<label class="col-md-4 control-label">Fecha</label>
+           							 <div class='input-group date' id='datetimepicker1' name="fecha">
+              						  <input type='text' class="form-control" name="fecha_expiracion" >
+               							<span class="input-group-addon">
+                   						 <span class="fa fa-calendar">
+                    						</span>
+               							 </span>
+           							 </div>
+        						</div>
+   						 </div>
     
 
 
